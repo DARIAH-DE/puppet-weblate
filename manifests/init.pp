@@ -13,7 +13,16 @@
 class weblate (
   $version       = $weblate::params::version,
   $manage_python = false,
+  $user          = undef,
   $database      = undef,
+  $mysqlhost     = 'localhost',
+  $mysqlport     = '3306',
+  $mysqldb       = undef,
+  $mysqluser     = undef,
+  $mysqlpassword = undef,
+  $secretkey     = undef,
+  $urlprefix     = undef,
+  $serveremail   = 'root@localhost',
 ) inherits weblate::params {
 
   anchor{ 'weblate::begin': }
@@ -22,9 +31,19 @@ class weblate (
   class { 'weblate::install':
     version  => $version,
     database => $database,
+    user     => $user,
   }
 
   class { 'weblate::config':
+    database      => $database,
+    mysqlhost     => $mysqlhost,
+    mysqlport     => $mysqlport,
+    mysqldb       => $mysqldb,
+    mysqluser     => $mysqluser,
+    mysqlpassword => $mysqlpassword,
+    secretkey     => $secretkey,
+    urlprefix     => $urlprefix,
+    serveremail   => $serveremail,
   }
 
   if $manage_python {

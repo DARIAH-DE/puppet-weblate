@@ -3,6 +3,7 @@
 class weblate::install (
   $version  = $::weblate::version,
   $database = $::weblate::database,
+  $user     = $::weblate::user,
 ){
 
   staging::file { "Weblate-${version}.tar.gz":
@@ -35,6 +36,11 @@ class weblate::install (
     }
   }
 
+  file { '/opt/weblate/data':
+    ensure  => directory,
+    owner   => $user,
+    require => Staging::Extract["Weblate-${version}.tar.gz"],
+  }
 
 }
 
