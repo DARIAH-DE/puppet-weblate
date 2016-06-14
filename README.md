@@ -1,8 +1,8 @@
-# weblate
+# Weblate
 
 ## Overview
 
-This puppet module will install [weblate](https://weblate.org) into a virtual environment.
+This puppet module will install [Weblate](https://weblate.org) into a virtual environment.
 
 
 ## Requires

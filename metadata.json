@@ -1,9 +1,9 @@
 {
   "name": "schildwaechter-weblate",
   "version": "0.0.1",
-  "author": "schildwaechter",
+  "author": "Carsten Thiel",
   "summary": "Install weblate with requirements into a virtualenv.",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/schildwaechter/puppet-weblate",
   "project_page": "https://github.com/schildwaechter/puppet-weblate",
   "issues_url": "https://github.com/schildwaechter/puppet-weblate/issues",
