@@ -1,0 +1,24 @@
+{
+  "name": "schildwaechter-weblate",
+  "version": "0.0.1",
+  "author": "schildwaechter",
+  "summary": "Install weblate with requirements into a virtualenv.",
+  "license": "Apache 2.0",
+  "source": "https://github.com/schildwaechter/puppet-weblate",
+  "project_page": "https://github.com/schildwaechter/puppet-weblate",
+  "issues_url": "https://github.com/schildwaechter/puppet-weblate/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.3.2"},
+    {"name":"puppet-staging","version_requirement":">= 1.0.6"},
+    {"name":"stankevich-python","version_requirement":">= 1.12.0"}
+  ]
+}
+

@@ -1,0 +1,3 @@
+.bundle/
+spec/fixtures/
+Gemfile.lock
