@@ -11,18 +11,20 @@
 # Copyright 2016 SUB Göttingen, unless otherwise noted.
 #
 class weblate (
-  $version       = $weblate::params::version,
-  $manage_python = false,
-  $user          = undef,
-  $database      = undef,
-  $mysqlhost     = 'localhost',
-  $mysqlport     = '3306',
-  $mysqldb       = undef,
-  $mysqluser     = undef,
-  $mysqlpassword = undef,
-  $secretkey     = undef,
-  $urlprefix     = undef,
-  $serveremail   = 'root@localhost',
+  $version          = $weblate::params::version,
+  $manage_python    = false,
+  $user             = undef,
+  $database         = undef,
+  $mysqlhost        = 'localhost',
+  $mysqlport        = '3306',
+  $mysqldb          = undef,
+  $mysqluser        = undef,
+  $mysqlpassword    = undef,
+  $secretkey        = undef,
+  $urlprefix        = undef,
+  $serveremail      = 'root@localhost',
+  $timezone         = $::timezone,
+  $additionalconfig = {},
 ) inherits weblate::params {
 
   anchor{ 'weblate::begin': }
@@ -35,15 +37,16 @@ class weblate (
   }
 
   class { 'weblate::config':
-    database      => $database,
-    mysqlhost     => $mysqlhost,
-    mysqlport     => $mysqlport,
-    mysqldb       => $mysqldb,
-    mysqluser     => $mysqluser,
-    mysqlpassword => $mysqlpassword,
-    secretkey     => $secretkey,
-    urlprefix     => $urlprefix,
-    serveremail   => $serveremail,
+    database         => $database,
+    mysqlhost        => $mysqlhost,
+    mysqlport        => $mysqlport,
+    mysqldb          => $mysqldb,
+    mysqluser        => $mysqluser,
+    mysqlpassword    => $mysqlpassword,
+    secretkey        => $secretkey,
+    urlprefix        => $urlprefix,
+    serveremail      => $serveremail,
+    additionalconfig => $additionalconfig,
   }
 
   if $manage_python {
