@@ -2,7 +2,7 @@
 #
 class weblate::params {
 
-  $version = '2.6'
+  $version = '2.13'
 
 }
 

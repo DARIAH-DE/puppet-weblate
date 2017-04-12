@@ -21,20 +21,21 @@ class weblate::config (
     default: { fail('DB type not supported by this module') }
   }
 
-  file { '/opt/weblate/weblate/settings.py':
+  file { '/opt/weblate/lib/python2.7/site-packages/weblate/settings.py':
     ensure  => file,
-    content => template('weblate/opt/weblate/weblate/settings.py.erb'),
+    owner   => 'www-data',
+    content => template('weblate/opt/weblate/settings.py.erb'),
+    notify  => Service['apache2'],
   }
 
-  exec { 'collectstatic':
-    user      => 'www-data',
-    creates   => '/opt/weblate/data/static',
-    path      => ['/bin','/sbin','/usr/bin','/usr/sbin','/usr/local/bin','/usr/local/sbin'],
-    command   => "bash -c 'source /opt/weblate/venv/bin/activate && ./manage.py collectstatic --noinput'",
-    cwd       => '/opt/weblate',
-    require   => [File['/opt/weblate/weblate/settings.py']],
-    subscribe => Staging::Extract["Weblate-${version}.tar.gz"],
-  }
+  #  exec { 'dbmigrate':
+  #    user      => 'www-data',
+  # refreshonly  => true,
+  #    path      => ['/bin','/sbin','/usr/bin','/usr/sbin','/usr/local/bin','/usr/local/sbin'],
+  #    command   => "bash -c 'source /opt/weblate/bin/activate && export DJANGO_SETTINGS_MODULE=weblate.settings && weblate migrate'",
+  #    cwd       => '/opt/weblate',
+  #    require   => [File['/opt/weblate/lib/python2.7/site-packages/weblate/settings.py']],
+  #  }
 
 }
 

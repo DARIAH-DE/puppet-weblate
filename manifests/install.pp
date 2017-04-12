@@ -6,41 +6,52 @@ class weblate::install (
   $user     = $::weblate::user,
 ){
 
-  staging::file { "Weblate-${version}.tar.gz":
-    source => "http://dl.cihar.com/weblate/Weblate-${version}.tar.gz",
-  }->
-  staging::extract { "Weblate-${version}.tar.gz":
-    target  => '/opt',
-    creates => "/opt/Weblate-${version}",
-  }
-  file { '/opt/weblate':
-    ensure => link,
-    target => "/opt/Weblate-${version}",
-  }
-
   python::virtualenv { '/opt/weblate' :
-    ensure       => present,
-    version      => 'system',
-    requirements => '/opt/weblate/requirements.txt',
-    venv_dir     => '/opt/weblate/venv',
-    cwd          => '/opt/weblate',
-    timeout      => 0,
-    require      => Staging::Extract["Weblate-${version}.tar.gz"],
+    ensure  => present,
+    version => 'system',
+    owner   => $user,
+    timeout => 0,
   }
 
   if ($database == 'mysql') {
     python::pip { 'mysql' :
       ensure     => present,
       pkgname    => 'MySQL-python',
-      virtualenv => '/opt/weblate/venv',
+      virtualenv => '/opt/weblate',
+      owner      => $user,
     }
   }
 
-  file { '/opt/weblate/data':
-    ensure  => directory,
-    owner   => $user,
-    require => Staging::Extract["Weblate-${version}.tar.gz"],
+  python::pip { 'siphashc3' :
+    ensure     => latest,
+    pkgname    => 'siphashc3',
+    virtualenv => '/opt/weblate',
+    owner      => $user,
+  }->
+  python::pip { 'Weblate' :
+    ensure     => $version,
+    pkgname    => 'Weblate',
+    virtualenv => '/opt/weblate',
+    owner      => $user,
   }
+
+
+  $weblate_dependencies = ['pytz', 'python-bidi', 'PyYaML', 'Babel', 'pyuca', 'pylibravatar', 'pydns']
+
+  $weblate_dependencies.each |String $depen| {
+    python::pip { $depen :
+      ensure     => present,
+      pkgname    => $depen,
+      virtualenv => '/opt/weblate',
+      owner      => $user,
+    }
+  }
+
+  #  file { '/opt/weblate/data':
+  #    ensure  => directory,
+  #    owner   => $user,
+  #    require => Staging::Extract["Weblate-${version}.tar.gz"],
+  #  }
 
 }
 
