@@ -2,6 +2,8 @@
 #
 class weblate::config (
   $version          = $::weblate::version,
+  $debug_mode       = $::weblate::debug_mode,
+  $data_dir         = $::weblate::data_dir,
   $database         = $::weblate::database,
   $mysqlhost        = $::weblate::mysqlhost,
   $mysqlport        = $::weblate::mysqlport,
@@ -14,7 +16,6 @@ class weblate::config (
   $timezone         = $::weblate::timezone,
   $additionalconfig = $::weblate::additionalconfig,
 ){
-
 
   case $database {
     'mysql': {}

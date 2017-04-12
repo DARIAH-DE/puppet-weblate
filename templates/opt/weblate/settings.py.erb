@@ -27,7 +27,11 @@ from logging.handlers import SysLogHandler
 # Django settings for Weblate project.
 #
 
+<%- if @debug_mode -%>
 DEBUG = True
+<%- else -%>
+DEBUG = False
+<%- end -%>
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -60,7 +64,11 @@ DATABASES = {
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Data directory
+<%- if @data_dir != nil -%>
+DATA_DIR = '<%= @data_dir %>'
+<%- else -%>
 DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
+<%- end -%>
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

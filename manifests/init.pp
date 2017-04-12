@@ -12,6 +12,8 @@
 #
 class weblate (
   $version          = $weblate::params::version,
+  $debug_mode       = false,
+  $data_dir         = undef,
   $manage_python    = false,
   $user             = undef,
   $database         = undef,
@@ -37,6 +39,8 @@ class weblate (
   }
 
   class { 'weblate::config':
+    debug_mode       => $debug_mode,
+    data_dir         => $data_dir,
     database         => $database,
     mysqlhost        => $mysqlhost,
     mysqlport        => $mysqlport,
@@ -61,8 +65,9 @@ class weblate (
 
 
   Anchor['weblate::begin'] ->
-    Class['weblate::install']->
-    Class['weblate::config']->
+  Class['weblate::install']->
+  Class['weblate::config']->
   Anchor['weblate::end']
 
 }
+
