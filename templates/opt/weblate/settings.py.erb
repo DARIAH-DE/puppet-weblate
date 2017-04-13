@@ -660,6 +660,10 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 #    'shibboleth',
 #)
 
-#REGISTRATION_OPEN = False
+<%- if @registration_open -%>
+REGISTRATION_OPEN = True
+<%- else -%>
+REGISTRATION_OPEN = False
+<%- end -%>
 
 

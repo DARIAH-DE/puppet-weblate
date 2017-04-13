@@ -47,11 +47,5 @@ class weblate::install (
     }
   }
 
-  #  file { '/opt/weblate/data':
-  #    ensure  => directory,
-  #    owner   => $user,
-  #    require => Staging::Extract["Weblate-${version}.tar.gz"],
-  #  }
-
 }
 
