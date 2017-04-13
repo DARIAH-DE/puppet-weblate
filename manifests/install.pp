@@ -1,9 +1,10 @@
 # weblate install class
 #
 class weblate::install (
-  $version  = $::weblate::version,
-  $database = $::weblate::database,
-  $user     = $::weblate::user,
+  $version        = $::weblate::version,
+  $database       = $::weblate::database,
+  $user           = $::weblate::user,
+  $use_shibboleth = $::weblate::use_shibboleth,
 ){
 
   python::virtualenv { '/opt/weblate' :
@@ -44,6 +45,16 @@ class weblate::install (
       pkgname    => $depen,
       virtualenv => '/opt/weblate',
       owner      => $user,
+    }
+  }
+
+  if $use_shibboleth {
+    python::pip { 'django-shibboleth-remoteuser' :
+      ensure     => present,
+      owner      => $user,
+      pkgname    => 'django-shibboleth-remoteuser',
+      url        => 'git+https://github.com/Brown-University-Library/django-shibboleth-remoteuser.git',
+      virtualenv => '/opt/weblate',
     }
   }
 

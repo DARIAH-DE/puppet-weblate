@@ -27,6 +27,9 @@ class weblate (
   $urlprefix         = undef,
   $serveremail       = 'root@localhost',
   $timezone          = $::timezone,
+  $site_title        = 'Weblate',
+  $enable_https      = false,
+  $use_shibboleth    = false,
   $additionalconfig  = {},
 ) inherits weblate::params {
 
@@ -34,9 +37,10 @@ class weblate (
   anchor{ 'weblate::end': }
 
   class { 'weblate::install':
-    version  => $version,
-    database => $database,
-    user     => $user,
+    version        => $version,
+    database       => $database,
+    user           => $user,
+    use_shibboleth => $use_shibboleth,
   }
 
   class { 'weblate::config':
@@ -53,6 +57,9 @@ class weblate (
     serveremail       => $serveremail,
     additionalconfig  => $additionalconfig,
     registration_open => $registration_open,
+    site_title        => $site_title,
+    enable_https      => $enable_https,
+    use_shibboleth    => $use_shibboleth,
   }
 
   if $manage_python {

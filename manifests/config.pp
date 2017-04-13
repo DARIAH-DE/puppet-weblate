@@ -16,6 +16,9 @@ class weblate::config (
   $timezone          = $::weblate::timezone,
   $additionalconfig  = $::weblate::additionalconfig,
   $registration_open = $::weblate::registration_enabled,
+  $site_title        = $::weblate::site_title,
+  $enable_https      = $::weblate::enable_https,
+  $use_shibboleth    = $::weblate::use_shibboleth,
 ){
 
   case $database {
@@ -38,6 +41,18 @@ class weblate::config (
     cwd         => '/opt/weblate',
     require     => [File['/opt/weblate/lib/python2.7/site-packages/weblate/settings.py']],
     subscribe   => [Python::Pip['Weblate']],
+  }
+
+  if $use_shibboleth {
+    $_shib_urlpatterns = present
+  } else {
+    $_shib_urlpatterns = absent
+  }
+
+  file_line { 'weblate_urls.py':
+    ensure => $_shib_urlpatterns,
+    path   => '/opt/weblate/lib/python2.7/site-packages/weblate/urls.py',
+    line   => "urlpatterns += [ url(r'^shib/', include('shibboleth.urls', namespace='shibboleth')), ]",
   }
 
 }

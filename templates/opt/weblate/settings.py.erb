@@ -34,7 +34,7 @@ DEBUG = False
 <%- end -%>
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Carsten Thiel', 'thiel@sub.uni-goettingen'),
 )
 
 MANAGERS = ADMINS
@@ -189,8 +189,10 @@ TEMPLATES = [
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
                 'weblate.trans.context_processors.weblate_context',
-#                'shibboleth.context_processors.login_link',
-#                'shibboleth.context_processors.logout_link',
+<%- if @use_shibboleth -%>
+                'shibboleth.context_processors.login_link',
+                'shibboleth.context_processors.logout_link',
+<%- end -%>
             ],
             'loaders': [
                 ('django.template.loaders.cached.Loader', [
@@ -281,7 +283,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'weblate.accounts.middleware.AuthenticationMiddleware',
-#    'shibboleth.middleware.ShibbolethRemoteUserMiddleware',
+<%- if @use_shibboleth -%>
+    'shibboleth.middleware.ShibbolethRemoteUserMiddleware',
+<%- end -%>
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -300,7 +304,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.sitemaps',
-#    'shibboleth',
+<%- if @use_shibboleth -%>
+    'shibboleth',
+<%- end -%>
     'social_django',
     'crispy_forms',
     'compressor',
@@ -477,10 +483,14 @@ MT_YANDEX_KEY = None
 MT_TMSERVER = None
 
 # Title of site to use
-SITE_TITLE = 'Weblate'
+SITE_TITLE = '<%= @site_title %>'
 
 # Whether site uses https
+<%- if @enable_https -%>
+ENABLE_HTTPS = True
+<%- else -%>
 ENABLE_HTTPS = False
+<%- end -%>
 
 # URL of login
 LOGIN_URL = '{0}/accounts/login/'.format(URL_PREFIX)
@@ -640,25 +650,21 @@ REST_FRAMEWORK = {
 # Force sane test runner
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+<%- if @use_shibboleth -%>
+AUTHENTICATION_BACKENDS = (
+    'shibboleth.backends.ShibbolethRemoteUserBackend',
+)
 
-#AUTHENTICATION_BACKENDS = (
-#    'shibboleth.backends.ShibbolethRemoteUserBackend',
-#)
+SHIBBOLETH_ATTRIBUTE_MAP = {
+    "REMOTE_USER": (False, "username"),
+    "displayName": (False, "first_name"),
+    "mail": (False, "email"),
+}
 
-#SHIBBOLETH_ATTRIBUTE_MAP = {
-#    "REMOTE_USER": (False, "username"),
-#    "givenName": (False, "first_name"),
-#    "sn": (False, "last_name"),
-#    "mail": (False, "email"),
-#}
-
-
-#LOGIN_URL = 'https://box.dariah.local/Shibboleth.sso/Login'
-#SHIBBOLETH_LOGOUT_URL = 'https://box.dariah.local/Shibboleth.sso/Logout?return=%s'
-
-#INSTALLED_APPS += (
-#    'shibboleth',
-#)
+LOGIN_URL = 'https://box.dariah.local/Shibboleth.sso/Login'
+SHIBBOLETH_LOGOUT_URL = '/Shibboleth.sso/Logout?return=%s'
+SHIBBOLETH_LOGOUT_REDIRECT_URL = '/weblate'
+<%- end -%>
 
 <%- if @registration_open -%>
 REGISTRATION_OPEN = True
