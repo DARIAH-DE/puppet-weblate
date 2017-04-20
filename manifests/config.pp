@@ -2,6 +2,7 @@
 #
 class weblate::config (
   $version                = $::weblate::version,
+  $user                   = $::weblate::user,
   $debug_mode             = $::weblate::debug_mode,
   $data_dir               = $::weblate::data_dir,
   $database               = $::weblate::database,
@@ -30,19 +31,28 @@ class weblate::config (
 
   file { '/opt/weblate/lib/python2.7/site-packages/weblate/settings.py':
     ensure  => file,
-    owner   => 'www-data',
+    owner   => $user,
     content => template('weblate/opt/weblate/settings.py.erb'),
     notify  => Service['apache2'],
   }
 
   exec { 'weblate-dbmigrate':
-    user        => 'www-data',
+    user        => $user,
     refreshonly => true,
     path        => ['/bin','/sbin','/usr/bin','/usr/sbin','/usr/local/bin','/usr/local/sbin'],
     command     => "bash -c 'source /opt/weblate/bin/activate && export DJANGO_SETTINGS_MODULE=weblate.settings && weblate migrate'",
     cwd         => '/opt/weblate',
     require     => [File['/opt/weblate/lib/python2.7/site-packages/weblate/settings.py']],
     subscribe   => [Python::Pip['Weblate']],
+  }
+
+  unless ($user == undef) {
+    cron { 'weblate update_index':
+      command => "bash -c 'source /opt/weblate/bin/activate && export DJANGO_SETTINGS_MODULE=weblate.settings && weblate update_index'",
+      user    => $user,
+      hour    => '*',
+      minute  => '*/5',
+    }
   }
 
   if $use_shibboleth {

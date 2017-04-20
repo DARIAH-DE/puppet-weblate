@@ -62,6 +62,7 @@ class weblate (
     site_title             => $site_title,
     enable_https           => $enable_https,
     use_shibboleth         => $use_shibboleth,
+    user                   => $user,
     default_commiter_email => $default_commiter_email,
     default_commiter_name  => $default_commiter_name,
   }
