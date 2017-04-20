@@ -36,8 +36,7 @@ class weblate::install (
     owner      => $user,
   }
 
-
-  $weblate_dependencies = ['pytz', 'python-bidi', 'PyYaML', 'Babel', 'pyuca', 'pylibravatar', 'pydns']
+  $weblate_dependencies = ['pytz', 'python-bidi', 'PyYaML', 'Babel', 'pyuca', 'pylibravatar', 'pydns', 'docutils']
 
   $weblate_dependencies.each |String $depen| {
     python::pip { $depen :
