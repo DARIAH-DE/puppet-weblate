@@ -1,12 +1,12 @@
 {
-  "name": "schildwaechter-weblate",
+  "name": "dariah-weblate",
   "version": "0.0.2",
   "author": "Carsten Thiel",
   "summary": "Install weblate with requirements into a virtualenv.",
   "license": "Apache-2.0",
-  "source": "https://github.com/schildwaechter/puppet-weblate",
-  "project_page": "https://github.com/schildwaechter/puppet-weblate",
-  "issues_url": "https://github.com/schildwaechter/puppet-weblate/issues",
+  "source": "https://github.com/dariah-de/puppet-weblate",
+  "project_page": "https://github.com/dariah-de/puppet-weblate",
+  "issues_url": "https://github.com/dariah-de/puppet-weblate/issues",
   "operatingsystem_support": [
     {
       "operatingsystem": "Ubuntu",
